@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello guys!</h1>
+
+    {% for i in user_list %}
+
+
+
+    {{i.first_name}}
+
+    <br>
+    
+    <h1>{{i.last_name}}</h1>
+    
+    <br>
+
+    <p>{{i.email}}</p>
+
+    <br>
+
+    <h3>{{i.phone}}</h3>
+
+    <br>
+
+    <strong>{{i.address}}</strong>
+    <hr>
+
+    <br><br>
+
+    {% endfor %}
+
+
+</body>
+</html>
