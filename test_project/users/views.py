@@ -13,3 +13,10 @@ def users(request):
     }
 
     return HttpResponse(template.render(context))
+
+def aboutus(request):
+    page= loader.get_template("about_us.html")
+    
+
+    return HttpResponse(page.render())
+

@@ -5,4 +5,5 @@ class User(models.Model):
     last_name=models.CharField(max_length=255)
     mobile=models.IntegerField(null=True)
     dob=models.DateField(null=True)
+    time= models.TimeField(null=True)
     

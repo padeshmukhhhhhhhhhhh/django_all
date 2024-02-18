@@ -1,0 +1,5 @@
+pip install social-auth-app-django
+
+
+youtube Bug Ninza
+https://www.youtube.com/watch?v=kPTJ1uYLjgE&t=275s

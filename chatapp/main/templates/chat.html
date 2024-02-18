@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room Website</title>
+  <!-- Bootstrap CSS link -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .list-group-item {
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .list-group-item:hover {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    #chatBox {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: scroll;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Chat Box Page -->
+<div class="container">
+
+  <h2 class="text-center">Chat Room: {{room1.name}}</h2>
+  <div id="chatBox" >
+      <div id="chat-messages" class="bg-secondary"></div>
+
+ 
+  </div>
+  <div class="form-group mt-2">
+    <div class="input-group">
+      <input type="text" class="form-control" id="messageInput" placeholder="Type your message">
+      <div class="input-group-append">
+        <button type="button" class="btn btn-primary" id="chat-message-submit">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ room1.name|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
+<!-- Bootstrap JS and jQuery links -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Custom JavaScript for sending messages -->
+<script>
+  
+ 
+
+    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/awsc/'
+        + roomName
+        + '/'
+    );
+   
+
+
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.message) {
+            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+        } else {
+            alert('The message was empty!')
+        }
+
+        scrollToBottom();
+    };
+
+    document.querySelector('#chatBox').focus();
+    document.querySelector('#messageInput').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        e.preventDefault()
+
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+
+        console.log({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        })
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        }));
+
+        messageInputDom.value = '';
+
+        return false
+    };
+
+   
+    
+
+</script>
+</body>
+</html>
