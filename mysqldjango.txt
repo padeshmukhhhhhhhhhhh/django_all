@@ -1,0 +1,10 @@
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.mysql', # change with your database engine name 'django.db.backends.ENGINE_NAME'
+         'NAME': 'digiresto',  # change with your database name
+         'USER': 'root',      # change with your user name
+         'PASSWORD': 'root',   # change with your password
+         'HOST': 'localhost',      # Or an IP Address that your DB is hosted on
+         'PORT': '3306',           # Make sure to change the port number to the correct one for your DB
+     }
+ }
